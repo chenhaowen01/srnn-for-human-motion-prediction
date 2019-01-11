@@ -47,14 +47,13 @@ class Predictor:
             for nm in nodeNames:
                 nt = nm.split(':')[1]
                 nodeName = nm.split(':')[0]
-                nodeRNNFeatures = data_utils.get_node_feature(nodeName, nodeFeatures, nodeFeatures_t_1)
+                nodeRNNFeatures = data_utils.get_node_feature(nodeName, nodeFeatures)
                 to_return[nm][T+i,:,:] = nodeRNNFeatures[0,:,:]
             nodeFeatures_t_1 = copy.deepcopy(nodeFeatures)
         for nm in nodeNames:
             teY[nm] = np.array(teY[nm])
         del teX
         return teY
-
     
     def predict(self, groud_truth_sequence, length):
         features, data_mean, data_std, dimensions_to_ignore, new_idx = data_utils.skeleto_to_feature(groud_truth_sequence)
@@ -68,10 +67,10 @@ class Predictor:
         # dimensions_to_ignore = data_stats['ignore_dimensions']
 
         forecast, forecast_node_feature = data_utils.get_predict_data(features)
-        # self._model.predict_sequence(forecast, forecast_node_feature)
         predicted_features = self._predict_sequence(forecast, forecast_node_feature, length)
         return data_utils.feature_to_skeleto(predicted_features, data_mean, data_std, dimensions_to_ignore, new_idx)
 
+# just for test
 def main():
     if len(sys.argv) < 3:
         return

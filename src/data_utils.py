@@ -178,7 +178,6 @@ drop_right_knee = [9,10,11]
 def skeleto_to_feature(skeleto):
   data_mean, data_std, dimensions_to_ignore, new_idx = normalization_stats(skeleto)
   normalized_skeleto = normalize_data(skeleto, data_mean, data_std)
-  normalized_skeleto = normalized_skeleto[:50, :]
   features = {}
   nodeNames = node_features_ranges.keys()
   for nm in nodeNames:
@@ -225,6 +224,7 @@ def feature_to_skeleto(feature, data_mean, data_std, dimensions_to_ignore, new_i
   return unnormalize_data(origData, data_mean, data_std)
 
 def get_feature(feature, nodeName, edgeType):
+  print(feature.keys())
   if edgeType.split('_')[1] == 'input':
     return feature[nodeName]
   
@@ -263,7 +263,7 @@ def get_feature(feature, nodeName, edgeType):
 
   return features
 
-def get_node_feature(nodeName, nodeFeatures, nodeFeatures_t_1):
+def get_node_feature(nodeName, nodeFeatures):
   edge_features = {}
   nodeType = nodeNames[nodeName]
   edgeTypesConnectedTo = nodeToEdgeConnections[nodeType].keys()
@@ -306,7 +306,7 @@ def get_predict_data(feature):
     forecast_node_feature[idx] = feature[nodeName]
   return forecast, forecast_node_feature
 
-
+# just for test
 if __name__ == '__main__':
   load_crf_graph('./crf')
   print(nodeNames, nodeList, nodeToEdgeConnections, nodeConnections, nodeFeatureLength, edgeList, edgeFeatures)
