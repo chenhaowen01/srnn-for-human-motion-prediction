@@ -194,16 +194,16 @@ def skeleto_to_feature(skeleto):
 def feature_to_skeleto(feature, data_mean, data_std, dimensions_to_ignore, new_idx):
   keys = feature.keys()
   [T, N, D]  = feature[keys[0]].shape
-  print("D: ", D)
+  # print("D: ", D)
   D = len(new_idx) - len(np.where(new_idx < 0)[0])
   single_vec = np.zeros((T, D),dtype=np.float32)
   for k in keys:
     nm = k.split(':')[0]
     idx = new_idx[node_features_ranges[nm]]
     insert_at = np.delete(idx,np.where(idx < 0))
-    print("k: ", k)
-    print("idx: ", idx)
-    print("insert_at: ", insert_at)
+    # print("k: ", k)
+    # print("idx: ", idx)
+    # print("insert_at: ", insert_at)
     single_vec[:, insert_at] = feature[k][:, 0, :]
   
   T = single_vec.shape[0]
@@ -224,7 +224,7 @@ def feature_to_skeleto(feature, data_mean, data_std, dimensions_to_ignore, new_i
   return unnormalize_data(origData, data_mean, data_std)
 
 def get_feature(feature, nodeName, edgeType):
-  print(feature.keys())
+  # print(feature.keys())
   if edgeType.split('_')[1] == 'input':
     return feature[nodeName]
   
@@ -311,11 +311,9 @@ if __name__ == '__main__':
   load_crf_graph('./crf')
   print(nodeNames, nodeList, nodeToEdgeConnections, nodeConnections, nodeFeatureLength, edgeList, edgeFeatures)
   seq = readCSVasFloat('/home/chw/srnn/h3.6m/dataset/S1/walking_1.txt')
-  seq = seq[100:150, :]
-  print(seq[:2, :])
+  seq = seq[100:200:2, :]
   features, data_mean, data_std, dimensions_to_ignore, new_idx = skeleto_to_feature(seq)
   print(features)
   get_predict_data(features)
   # print(features, data_mean, data_std, dimensions_to_ignore, new_idx)
   seq2 = feature_to_skeleto(features, data_mean, data_std, dimensions_to_ignore, new_idx)
-  print(seq2[:2, :])

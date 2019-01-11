@@ -79,8 +79,8 @@ def main():
 
     predictor = Predictor(checkpoint_path)
     groud_truth_sequence = data_utils.readCSVasFloat(data_set_path)
-    groud_truth_sequence = groud_truth_sequence[30:, :]
-    predicted_sequence = predictor.predict(groud_truth_sequence, 50)
+    groud_truth_sequence = groud_truth_sequence[100:200:2, :]
+    predicted_sequence = predictor.predict(groud_truth_sequence, 100)
     data_utils.writeFloatAsCVS('groud_truth.txt', groud_truth_sequence)
     data_utils.writeFloatAsCVS('predicted.txt', predicted_sequence)
 
